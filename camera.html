@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>camera</title>
+</head>
+<body>
+    <div id="'contentHolder">
+        <video id="video" autoplay></video>
+        <canvas style="display:none;" id="canvas"></canvas>
+        <img id="imgXX" src=""/>
+    </div>
+    <button id="btn-snap" onclick="takePhoto()">拍照</button>
+    <script>
+        const cvs = document.getElementById("canvas")
+        const video = document.getElementById("video")
+        cvs.width = cvs.height = video.width = video.height = 400
+        const {width,height} = cvs
+        const ctx = cvs.getContext('2d')
+
+        const constraints = {
+            video:{
+                width,
+                height
+            }
+        }
+
+        navigator.mediaDevices.getUserMedia({
+            video:{
+                width,
+                height
+            }
+        }).then((stream) => {
+            video.srcObject = stream
+            video.onloadedmetadata = () => video.play()
+        })
+
+        function takePhoto(){
+            ctx.drawImage(video, 0, 0, width, height)
+            document.getElementById("imgXX").src = cvs.toDataURL('image/png')
+        }
+
+        
+    </script>
+</body>
+<script>
+        document.querySelector('style').append(`canvas {
+            position: fixed;
+            left:0;
+            top: 0;
+            z-index: 9999;
+            pointer-events: none;
+        }`)
+        document.body.appendChild(document.createElement('canvas'))
+        const cv = document.querySelector('canvas')
+        const ct = document.getContext('2d')
+        cv.width = document.documentElement.clientWidth
+        cv.height = document.documentElement.clientHeight
+        const p = {
+            x: 0,
+            y: 0,
+            r:50
+        }
+        document.onmousemove = e => {
+            p.x = e.clientX
+            p.y = e.clientY
+            render()
+        }
+        
+        const render = () => {
+            ct.beginPath()
+            ct.clearRect(0, 0, cv.width, cv.height)
+            var radial = ct.createRadialGradient(p.x,p.y,p.r,p.x,p.y,p.r*3);
+            radial.addColorStop(0,'rgba(255,255,255,0)');
+            radial.addColorStop(1,'rgba(0,0,0,0.5)');
+            ct.fillStyle = radial;
+            ct.fillRect(0,0,cv.width,cv.height);
+        }
+        render()
+        window.onresize = () => {
+            cv.width = document.documentElement.clientWidth
+            cv.height = document.documentElement.clientHeight
+            render()
+        }
+</script>
+</html>

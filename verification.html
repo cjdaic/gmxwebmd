@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!--开发版本-->
+    <link rel="stylesheet" href="static/plugins/bootstrap-3.4.1-dist/css/bootstrap.css">
+    <style>
+        .account{
+            width:500px;
+            border: 1px solid blueviolet;
+            height: 350px;
+
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 300px;
+        }
+        .account h1{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="account">
+        <h1>用户登录</h1>
+        <form class="form-horizontal">
+            <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">账号</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+            </div>
+            </div>
+            <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+            </div>
+            </div>
+            <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                <label>
+                    <input type="checkbox"> Remember me
+                </label>
+                </div>
+            </div>
+            </div>
+            <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Sign in</button>
+            </div>
+            </div>
+        </form>
+        <input type="text" value="" placeholder="请输入验证码（区分大小写）" 
+        style="height:43px;position: relative; top:-15px; font-size:20px;"id ="text">
+        <canvas id="canvas" width="100" height="43" onclick="dj()" 
+        style="border: 1px solid #ccc;
+            border-radius: 5px;"></canvas>
+        <button class="btn" onclick="sublim()">提交</button>
+
+            <script>
+            var show_num = [];
+            draw(show_num);
+            function dj(){
+            draw(show_num);   
+            }
+            function sublim(){
+            var val=document.getElementById("text").value;  
+                        var num = show_num.join("");
+                        if(val==''){
+                            alert('请输入验证码！');
+                        }else if(val == num){
+                            alert('提交成功！');
+                            document.getElementById(".input-val").val('');
+                            draw(show_num);
+
+                        }else{
+                            alert('验证码错误！\n你输入的是:  '+val+"\n正确的是:  "+num+'\n请重新输入！');
+                            document.getElementById("text").value='';
+                            draw(show_num);
+                        }
+                    
+                
+                    
+                    }
+            function draw(show_num) {
+                    var canvas_width=document.getElementById('canvas').clientWidth;
+                    var canvas_height=document.getElementById('canvas').clientHeight;
+                    var canvas = document.getElementById("canvas");
+                    var context = canvas.getContext("2d");
+                    canvas.width = canvas_width;
+                    canvas.height = canvas_height;
+                    var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0,q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m";
+                    var aCode = sCode.split(",");
+                    var aLength = aCode.length;
+                        
+                    for (var i = 0; i <= 3; i++) {
+                        var j = Math.floor(Math.random() * aLength);
+                        var deg = Math.random() * 30 * Math.PI / 180;
+                        var txt = aCode[j];
+                        show_num[i] = txt;
+                        var x = 10 + i * 20;
+                        var y = 20 + Math.random() * 8;
+                        context.font = "bold 23px 微软雅黑";
+
+                        context.translate(x, y);
+                        context.rotate(deg);
+
+                        context.fillStyle = randomColor();
+                        context.fillText(txt, 0, 0);
+
+                        context.rotate(-deg);
+                        context.translate(-x, -y);
+                    }
+                    for (var i = 0; i <= 5; i++) {
+                        context.strokeStyle = randomColor();
+                        context.beginPath();
+                        context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+                        context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+                        context.stroke();
+                    }
+                    for (var i = 0; i <= 30; i++) {
+                        context.strokeStyle = randomColor();
+                        context.beginPath();
+                        var x = Math.random() * canvas_width;
+                        var y = Math.random() * canvas_height;
+                        context.moveTo(x, y);
+                        context.lineTo(x + 1, y + 1);
+                        context.stroke();
+                    }
+                }
+            function randomColor() {
+                    var r = Math.floor(Math.random() * 256);
+                    var g = Math.floor(Math.random() * 256);
+                    var b = Math.floor(Math.random() * 256);
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                }
+            </script>
+    
+    
+    </div>
+</body>
+</html>
