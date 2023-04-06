@@ -180,15 +180,16 @@
   </script>
   <!-- Ajax JavaScript Data Transfer -->
   <script>
-    function selectButton(button) {
-      var groupId = button.parentNode.id;
-      var buttons = document.querySelectorAll("#" + groupId + " div button");
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("selected");
-      }
-      button.classList.add("selected");
+    const selectButton = button => {
+      const groupId = button.parentNode.id;
+      const buttons = document.querySelectorAll("#" + groupId + " button");
+      buttons.forEach(btn => {
+        btn.classList.toggle("selected", btn === button);
+      })
     }
+    
   </script>
+
   <script>
     var confirm = document.getElementById("confirm"); // 获取提交按钮
     confirm.addEventListener("click", function () { // 添加点击事件监听器
