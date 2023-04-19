@@ -185,11 +185,25 @@
       const buttons = document.querySelectorAll("#" + groupId + " button");
       buttons.forEach(btn => {
         btn.classList.toggle("selected", btn === button);
+        
       })
+      String gid = "" + groupId;
+      String bvalu = "" + button.value;
+      var data = {
+        id: gid,
+        valu: bvalu,
+      };
+      $.ajax({
+        type: "POST",
+        url: "save.php",
+        data: JSON.stringify(data),
+        contentType: "application/json"
+        
+      });
     }
     
   </script>
-
+<!--
   <script>
     var confirm = document.getElementById("confirm"); // 获取提交按钮
     confirm.addEventListener("click", function () { // 添加点击事件监听器
@@ -209,7 +223,7 @@
       xhr.send(json); // 发送请求体
     });
   </script>
-
+-->
   </script>
 </body>
 
