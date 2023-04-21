@@ -7,16 +7,20 @@ if (strlen($json_data) > 0 && json_decode($json_data) != null) {
   $data = json_decode($json_data, true);
   // 获取id和value
   $id = $data['id'];
-  $value = $data['valu'];
+  $value = $data['value'];
   // 打开或创建mydata.json文件
-  $file = fopen("usr/usr.json", "w");
+ 
   // 检查文件是否可写
   if (is_writable("usr/usr.json")) {
     // 将id和value写入文件
-    fwrite($file, "$id: $value\n");
+
+    $content = file_get_contents("usr/usr.json");
+    $array = json_decode($content,true);
+    $array[$id] = $value; 
+    $content = json_encode($array);
     // 关闭文件
-    fclose($file);
-    // 返回成功信息
+    file_put_contents("usr/usr.json", $content);
+
     echo "Success";
   } else {
     // 返回错误信息

@@ -148,14 +148,15 @@
     </div>
     <div>
       <span class="label label-danger">modify .mdp files</span>
-      <span class="input-group-addon" id="sizing-addon1">nsteps</span>
-      <input type="text" class="form-control" placeholder="default = 50000" aria-describedby="sizing-addon1">
+      <span class="input-group-addon" id="sizing-addon1">nsteps(input numbers pls)</span>
+      <input type="text" id="nstep" pattern="\d+" class="form-control" placeholder="default = 50000"
+        aria-describedby="sizing-addon1">
     </div>
   </div>
 
   <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: lightgray; padding: 10px;">
     <div>
-      <button type="button" class="btn btn-success" id="confirm">confirm</button>
+      <button type="button" class="btn btn-success" id="run">run</button>
     </div>
     <div>Console:</div>
     <div style="padding: 10px; background-color: white;">
@@ -178,53 +179,109 @@
       alert('The file has been uploaded successfully.');
     }
   </script>
-  <!-- Ajax JavaScript Data Transfer -->
+  <!-- Ajax JavaScript Data Transfer For buttons-->
   <script>
     const selectButton = button => {
       const groupId = button.parentNode.id;
       const buttons = document.querySelectorAll("#" + groupId + " button");
       buttons.forEach(btn => {
         btn.classList.toggle("selected", btn === button);
-        
+
       })
-      String gid = "" + groupId;
-      String bvalu = "" + button.value;
+      let gid = "" + groupId;
+      let bvalu = "" + button.value;
       var data = {
         id: gid,
-        valu: bvalu,
+        value: bvalu,
       };
       $.ajax({
         type: "POST",
         url: "save.php",
         data: JSON.stringify(data),
         contentType: "application/json"
-        
+
       });
     }
-    
+
   </script>
-<!--
   <script>
-    var confirm = document.getElementById("confirm"); // 获取提交按钮
-    confirm.addEventListener("click", function () { // 添加点击事件监听器
-      var buttons = document.getElementsByTagName("button"); // 获取所有按钮
-      var data = {}; // 创建一个空对象
-      for (var i = 0; i < buttons.length; i++) { // 遍历所有按钮
-        var button = buttons[i];
-        if (button.classList.contains("selected")) { // 如果按钮被选中
-          data[button.parentNode.id] = button.id; // 将按钮的键值对添加到对象中
+    var radios = document.querySelectorAll("input[type='radio']");
+    radios.forEach(function (radio) {
+      radio.addEventListener("click", function () {
+        var id = this.id;
+        var value = this.value;
+        var data = {
+          id: id,
+          value: value,
         }
-      }
-      var json = JSON.stringify(data); // 将对象转换成 JSON 格式的字符串
-      var xhr = new XMLHttpRequest(); // 创建一个 XMLHttpRequest 对象
-      xhr.timeout = 10000;
-      xhr.open("PUT", "usr/usr.json"); // 设置请求的方法和地址
-      xhr.setRequestHeader("content-Type", "application/json"); // 设置请求头的内容类型
-      xhr.send(json); // 发送请求体
+        $.ajax({
+          type: "POST",
+          url: "save.php",
+          data: JSON.stringify(data),
+          contentType: "application/json"
+        });
+      })
     });
   </script>
--->
+  <script>
+    var ranges = document.querySelectorAll("input[type='range']");
+    ranges.forEach(function (range) {
+      range.addEventListener("input", function () {
+        var id = this.id;
+        var value = this.value;
+        var data = {
+          id: id,
+          value: value,
+        }
+        $.ajax({
+          type: "POST",
+          url: "save.php",
+          data: JSON.stringify(data),
+          contentType: "application/json"
+        });
+      })
+    });
   </script>
+  <script>
+    var texts = document.querySelectorAll("input[type='text']");
+    texts.forEach(function (text) {
+      text.addEventListener("input", function () {
+        var id = this.id;
+        var value = this.value;
+        var data = {
+          id: id,
+          value: value,
+        }
+        $.ajax({
+          type: "POST",
+          url: "save.php",
+          data: JSON.stringify(data),
+          contentType: "application/json"
+        });
+      })
+    });
+    texts.forEach(function (text) {
+      text.addEventListener("keydown", function (event) {
+        // 获取按键的代码
+        var keyCode = event.keyCode;
+
+        // 如果按键不是数字键或退格键或方向键，阻止默认行为
+        if (!(keyCode >= 48 && keyCode <= 57) && !(keyCode >= 96 && keyCode <= 105) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
+          event.preventDefault();
+        }
+      })
+    });
+  </script>
+  <script>
+    $(document).ready (function () {
+        $("#run").click (function () {
+            $.get ("/run_script", function (data) {
+                alert (data);
+            });
+        });
+    });
+    </script>
+  
 </body>
 
 </html>
