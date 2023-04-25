@@ -159,7 +159,7 @@
       <button type="button" class="btn btn-success" id="run">run</button>
     </div>
     <div>Console:</div>
-    <div style="padding: 10px; background-color: white;">
+    <div style="padding: 10px; background-color: white;" id="result">
       <!-- Console content goes here -->
     </div>
     <div style="margin-top: 10px;">
@@ -273,15 +273,15 @@
     });
   </script>
   <script>
-    $(document).ready (function () {
-        $("#run").click (function () {
-            $.get ("/run_script", function (data) {
-                alert (data);
-            });
+    $(document).ready(function () {
+      $("#run").click(function () {
+        $.get("/cgi-bin/autogmx.cgi", function (data) {
+          $("#result").html(data);
         });
-    });
-    </script>
-  
+      });
+    });//执行脚本
+  </script>
+
 </body>
 
 </html>
