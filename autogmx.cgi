@@ -9,16 +9,23 @@ import configparser
 import cgi
 
 sys.stdout.write("Content-Type: text/plain\n\n")
-result = ""
+
 
 def autorun(command):
-    result += subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    sleep(10)
+    result = ""
+    process = subprocess.run(command.split(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout = process.stdout.decode("GB2312 ")
+    stderr = process.stderr.decode("GB2312 ")
+    result += stdout
+    result += "\n" + stderr
+
     sys.stdout.write(result)
+    sleep(1)
 
 #打开/usr/usr.json文件
-with open("/usr/usr.json","r") as usr_conf:
-    usr_data = json.loads(usr_conf)
+with open("D:\\apache\\Apache24\\htdocs\\usr\\usr.json","r") as usr_conf:
+    f = usr_conf.read()
+    usr_data = json.loads(f)
 #根据json文件读取用户名与各项参数，生成用户的文件目录，在里面生成gromacs所需的各项文件
 ###
 #dir = usr_data.get("name")
@@ -77,7 +84,7 @@ cd_gyrate = "gmx gyrate -s md_0_1.tpr -f md_0_1_noPBC.xtc -o gyrate.xvg"
 
 def modify_mdp(file: str):
     config = configparser.ConfigParser(inline_comment_prefixes=";")
-    config.read(file)
+    config.read(file, encoding='utf-8')
     config.set("md", "nstep", str(usr_data.get("nstep")))
     with open(file, 'w') as f:
         config.write(f)
@@ -91,11 +98,11 @@ def gmx_inital():
     autorun(cd_mdrun)
     autorun(cd_energy)
     #提示用户完成初始化 tobeadded，在底部框中给出生成文件链接供客户端下载,接下来修改mdp文件
-    modify_mdp("ions.mdp")
+    #modify_mdp("ions.mdp")
 
 def nvt_npt():    
-    modify_mdp("nvt.mdp")
-    modify_mdp("npt.mdp")
+    #modify_mdp("nvt.mdp")
+    #modify_mdp("npt.mdp")
     autorun(cd_grompp_nvt)
     autorun(cd_mdrun_nvt)
     autorun(cd_energy_nvt)
@@ -108,7 +115,7 @@ def nvt_npt():
 
 
 def md():
-    modify_mdp("md.mdp")
+    #modify_mdp("md.mdp")
     autorun(cd_grompp_md)
     autorun(cd_mdrun_md)
     autorun(cd_trjconv)
@@ -120,12 +127,12 @@ def md():
 
 def main():
     #根据网页读取的json修改各个命令行，每隔10秒自动执行指令，并输出运行的result，修改mdp文件，以及自动执行
-    modify_mdp("usr/ions.mdp")
+    #modify_mdp("usr/ions.mdp")
     gmx_inital()
     nvt_npt()
     md()
-    sys.stdout.write(result)
-if __name__ == '__main__':
-    main()
+
+
+main()
 
 
