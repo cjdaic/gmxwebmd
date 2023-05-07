@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSmol -- Jmol/HTML5 Demo</title>
+<script type="text/javascript" src="JSmol.min.js"></script>
+
+<script type="text/javascript">
+
+Jmol._isAsync = false;
+
+// last update 2/18/2014 2:10:06 PM
+
+var jmolApplet0; // set up in HTML table, below
+
+// logic is set by indicating order of USE -- default is HTML5 for this test page, though
+
+// here!!!
+var s = document.location.search;
+
+// Developers: The _debugCode flag is checked in j2s/core/core.z.js, 
+// and, if TRUE, skips loading the core methods, forcing those
+// to be read from their individual directories. Set this
+// true if you want to do some code debugging by inserting
+// System.out.println, document.title, or alert commands
+// anywhere in the Java or Jmol code.
+
+Jmol._debugCode = (s.indexOf("debugcode") >= 0);
+
+jmol_isReady = function(applet) {
+	document.title = (applet._id + " - Jmol " + Jmol.___JmolVersion)
+	Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+}		
+
+var Info = {
+	width: 600,
+	height: 400,
+	debug: false,
+	color: "0xFFFFFF",
+	//addSelectionOptions: true,
+	use: "HTML5",   // JAVA HTML5 WEBGL are all options
+	j2sPath: "./j2s", // this needs to point to where the j2s directory is.
+	jarPath: "./java",// this needs to point to where the java directory is.
+	jarFile: "JmolAppletSigned.jar",
+	isSigned: true,
+	script: "set antialiasDisplay;load ../1.pdb;cartoon on",
+	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+	readyFunction: jmol_isReady,
+	disableJ2SLoadMonitor: true,
+  disableInitialConsole: true,
+  allowJavaScript: true
+	//defaultModel: "$dopamine",
+	//console: "none", // default will be jmolApplet0_infodiv, but you can designate another div here or "none"
+}
+
+// ready function: main function
+$(document).ready(function() {
+  $("#appdiv").html(Jmol.getAppletHtml("jmolApplet0", Info))
+})
+
+var lastPrompt=0;
+</script>
+
+</head>
+<body>
+<table width=1000 cellpadding=10>
+<tr>
+   
+<td colspan=2 style="font-size:14pt">
+<b>本页是3个AYFFF在纯水溶液中抽样到的最优结构。基于Jmol来展示。</b>
+<br>
+<b> 需要约10秒时间下载结构，请耐心等待。 </b>
+</td>
+
+</tr>
+<tr>
+
+<td valign="top">
+<!--here is the 对象/-->
+<div id="appdiv"></div>
+<br>
+<a href="javascript:Jmol.script(jmolApplet0,'console')">console</a>
+<a href="javascript:Jmol.script(jmolApplet0,'image')">image</a>
+<br>
+display
+<a href="javascript:Jmol.script(jmolApplet0,'set antialiasDisplay false')">faster</a>
+<a href="javascript:Jmol.script(jmolApplet0,'set antialiasDisplay true')">sharper</a>
+<br>
+info <a href="javascript:Jmol.showInfo(jmolApplet0, true)">show</a>
+<a href="javascript:Jmol.clearConsole(jmolApplet0)">clear</a>
+<a href="javascript:Jmol.showInfo(jmolApplet0, false)">hide</a>
+
+<br><a href="javascript:Jmol.script(jmolApplet0,'select *;cartoons off;spacefill only')">spacefill</a>
+<a href="javascript:Jmol.script(jmolApplet0,'select *;cartoons off;wireframe -0.1')">wire</a>
+<a href="javascript:Jmol.script(jmolApplet0,'select *;cartoons off;spacefill 23%;wireframe 0.15')">ball&amp;stick</a>
+<a href="javascript:Jmol.script(jmolApplet0,'select all;cartoon on')">cartoons</a>
+
+<br><a href="javascript:Jmol.script(jmolApplet0,'color property atomno')">color atomno</a>
+<a href="javascript:Jmol.script(jmolApplet0,'color cpk')">color cpk</a>
+<a href="javascript:Jmol.script(jmolApplet0,'color structure')">color structure</a>
+<br>
+<a href="javascript:Jmol.script(jmolApplet0,'select *;isosurface vdw')">isosurface vdw</a>
+<a href="javascript:Jmol.script(jmolApplet0,'isosurface delete')">off</a>
+
+<a href="javascript:Jmol.script(jmolApplet0,'isosurface translucent')">translucent</a>
+<a href="javascript:Jmol.script(jmolApplet0,'isosurface opaque')">opaque</a>
+<br>
+labels <a href="javascript:Jmol.script(jmolApplet0,'if (_fileType == &quot;Pdb&quot;){select *.CA;label %n%r}else{select *;label %a};select *;')">on</a>
+<a href="javascript:Jmol.script(jmolApplet0,'select *;labels off')">off</a>
+
+</td>
+
+
+</tr></table>
+</td>
+</tr></table>
+</body>
+</html>
