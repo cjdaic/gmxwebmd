@@ -1,23 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      html, body {
-        height: 100%;
-        width: 100%;
+
+<head>
+  <meta charset="UTF-8">
+  <title>XVG Example</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <div id="myDiv" style="width: 800px; height: 600px;"></div>
+  <script>
+    Plotly.d3.text('density.xvg', function (xvg) {
+      var trace = {
+        x: [],
+        y: [],
+        mode: 'lines'
+      };
+      var lines = xvg.split('\n');
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (line.startsWith('#') || line.length == 0) {
+          // Skip comment and empty lines
+          continue;
+        }
+        var parts = line.split(/\s+/);
+        trace.x.push(parseFloat(parts[0]));
+        trace.y.push(parseFloat(parts[1]));
       }
-      
-      div {
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <div>
-      <object data="example.xvg" type="application/octet-stream" width="100%" height="100%">
-        <p>Unable to display xvg file.</p>
-      </object>
-    </div>
-  </body>
+      var data = [trace];
+      var layout = {
+        title: 'GROMACS Energies',
+        xaxis: {
+          title: 'Time (ps)'
+        },
+        yaxis: {
+          title: '(kJ/mol)'
+        }
+      };
+      Plotly.newPlot('myDiv', data, layout);
+    });
+  </script>
+</body>
+
 </html>
