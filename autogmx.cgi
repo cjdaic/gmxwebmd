@@ -20,17 +20,15 @@ def autorun(command):
     stderr = str(process.stderr.decode("utf-8"))
     result += stdout
     result += stderr
-    try:
-        if 'error' in result:
-            process.kill()
-    except AttributeError:
-#        sys.stdout.write("something's wrong oops")
-        result = stderr 
+    if 'error' in result:
+        
+        sys.stdout.write(stdout + stderr)
+        exit()
     result = command + "\n"
     print(command)
     print(stderr)
-#    sys.stdout.write(result)
-#    sys.stdout.flush()
+    sys.stdout.write(result)
+    sys.stdout.flush()
     sleep(5)
 
 #打开/usr/usr.json文件
