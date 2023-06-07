@@ -379,15 +379,29 @@
         }
       })
     });
+    texts.forEach(function (text) {
+      text.addEventListener("blur", function () {
+        $.ajax({
+          url: "/cgi-bin/changemdp.cgi",
+          success: function (data) {
+            $("#result").append("mdp files modified");
+          }
+        })
+      });
+    }); 
   </script>
   <script>
     $(document).ready(function () {
       $("#run").click(function () {
-        $.get("/cgi-bin/autogmx.cgi", function (data) {
-          $("#result").html(data);
+        $("#result").empty();
+        $.ajax({
+          url: "/cgi-bin/autogmx.cgi",
+          success: function (data) {
+            $("#result").append(data);
+          }
         });
       });
-    });//执行脚本
+    });
   </script>
 
 </body>
