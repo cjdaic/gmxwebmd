@@ -17,6 +17,22 @@
       border-radius: 0;
     }
 
+    .output-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 150px;
+      overflow-y: auto;
+      background-color: #bca6a6;
+      color: #fff;
+      padding: 10px;
+      box-sizing: border-box;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      opacity: 0.5;
+    }
+
     .contai {
       display: flex;
       flex-wrap: wrap;
@@ -27,7 +43,7 @@
     }
 
     .selected {
-      background-color: greenyellow;
+      background-color: rgb(211, 133, 15);
     }
   </style>
   <script src="static\js\jquery-3.6.1.min.js"></script>
@@ -69,6 +85,9 @@
     <button id="upload-button" onclick="uploadFile()"> Upload </button>
   </div>
   <p><a href="jsmol/index.html">show_structure </a> </p>
+  <div>
+    <button type="button" class="btn btn-success" id="initial">initialize</button>
+  </div>
   <div class="contai">
     <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id="forcefield">
       <span class="label label-danger">pdb2gmx</span>
@@ -153,6 +172,7 @@
       <input type="radio" name="ct" id="ct" value="1">yes
       <input type="radio" name="ct" id="ct" value="0">no
     </div>
+
     <div>
       <span class="label label-danger">solvate</span>
       <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id="cs">
@@ -161,57 +181,11 @@
         <button type="button" class="btn btn-default" id="TIP3P" value="tip3p.gro"
           onclick="selectButton(this)">TIP3P</button>
       </div>
-      <!-- maxsol tobeappended-->
-    </div>
-    <div>
-      <span class="label label-danger">modify .mdp files</span>
-      <span class="input-group-addon" id="sizing-addon1">nsteps(input numbers pls)</span>
-      <input type="text" id="nstep" pattern="\d+" class="form-control" placeholder="default = 50000"
-        aria-describedby="sizing-addon1">
-    </div>
-  </div>
-  <div class="contai">
-    <span class="label label-danger">selections</span>
-    <div class="btn-group btn-group-justified" role="group" id="selections">
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-        <button type="button" class="btn btn-default" value="1" onclick="selectButton2(this)">Bond</button>
-        <button type="button" class="btn btn-default" value="5" onclick="selectButton2(this)">CMAP-Dih.</button>
-        <button type="button" class="btn btn-default" value="9" onclick="selectButton2(this)">Coulomb-(SR)</button>
-        <button type="button" class="btn btn-default" value="13" onclick="selectButton2(this)">Vir-XX</button>
-        <button type="button" class="btn btn-default" value="17" onclick="selectButton2(this)">Vir-YY</button>
-        <button type="button" class="btn btn-default" value="21" onclick="selectButton2(this)">Vir-ZZ</button>
-        <button type="button" class="btn btn-default" value="25" onclick="selectButton2(this)">Pres-YX</button>
-        <button type="button" class="btn btn-default" value="29" onclick="selectButton2(this)">Pres-ZY</button>
-      </div>
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-        <button type="button" class="btn btn-default" value="2" onclick="selectButton2(this)">U-B</button>
-        <button type="button" class="btn btn-default" value="6" onclick="selectButton2(this)">LJ-14</button>
-        <button type="button" class="btn btn-default" value="10" onclick="selectButton2(this)">Coul.-recip.</button>
-        <button type="button" class="btn btn-default" value="14" onclick="selectButton2(this)">Vir-XY</button>
-        <button type="button" class="btn btn-default" value="18" onclick="selectButton2(this)">Vir-YZ</button>
-        <button type="button" class="btn btn-default" value="22" onclick="selectButton2(this)">Pres-XX</button>
-        <button type="button" class="btn btn-default" value="26" onclick="selectButton2(this)">Pres-YY</button>
-        <button type="button" class="btn btn-default" value="30" onclick="selectButton2(this)">Pres-ZZ</button>
-      </div>
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-        <button type="button" class="btn btn-default" value="3" onclick="selectButton2(this)">Proper-Dih.</button>
-        <button type="button" class="btn btn-default" value="7" onclick="selectButton2(this)">Coulomb-14</button>
-        <button type="button" class="btn btn-default" value="11" onclick="selectButton2(this)">Potential</button>
-        <button type="button" class="btn btn-default" value="15" onclick="selectButton2(this)">Vir-XZ</button>
-        <button type="button" class="btn btn-default" value="19" onclick="selectButton2(this)">Vir-ZX</button>
-        <button type="button" class="btn btn-default" value="23" onclick="selectButton2(this)">Pres-XY</button>
-        <button type="button" class="btn btn-default" value="27" onclick="selectButton2(this)">Pres-YZ</button>
-        <button type="button" class="btn btn-default" value="31" onclick="selectButton2(this)">#Surf*SurfTen</button>
-      </div>
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-        <button type="button" class="btn btn-default" value="4" onclick="selectButton2(this)">Improper-Dih.</button>
-        <button type="button" class="btn btn-default" value="8" onclick="selectButton2(this)">LJ-(SR)</button>
-        <button type="button" class="btn btn-default" value="12" onclick="selectButton2(this)">Pressure</button>
-        <button type="button" class="btn btn-default" value="16" onclick="selectButton2(this)">Vir-YX</button>
-        <button type="button" class="btn btn-default" value="20" onclick="selectButton2(this)">Vir-ZY</button>
-        <button type="button" class="btn btn-default" value="24" onclick="selectButton2(this)">Pres-XZ</button>
-        <button type="button" class="btn btn-default" value="28" onclick="selectButton2(this)">Pres-ZX</button>
-        <button type="button" class="btn btn-default" value="32" onclick="selectButton2(this)">T-rest</button>
+      <div>
+        <span class="label label-danger">modify .mdp files</span>
+        <span class="input-group-addon" id="sizing-addon1">nsteps(input numbers pls)</span>
+        <input type="text" id="nstep" pattern="\d+" class="form-control" placeholder="default = 50000"
+          aria-describedby="sizing-addon1">
       </div>
     </div>
     <div class="btn-group btn-group-justified" role="group" id="groups">
@@ -238,171 +212,251 @@
         <button type="button" class="btn btn-default" value="14" onclick="selectButton2(this)">non-Water</button>
       </div>
     </div>
+    <!-- maxsol tobeappended-->
+
+
   </div>
-  <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: lightgray; padding: 10px;">
+  <div class="contai">
     <div>
-      <button type="button" class="btn btn-success" id="run">run</button>
+      <span class="label label-danger">selections</span>
+      <div class="btn-group btn-group-justified" role="group" id="selections">
+
+        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+          <button type="button" class="btn btn-default" value="1" onclick="selectButton2(this)">Bond</button>
+          <button type="button" class="btn btn-default" value="5" onclick="selectButton2(this)">CMAP-Dih.</button>
+          <button type="button" class="btn btn-default" value="9" onclick="selectButton2(this)">Coulomb-(SR)</button>
+          <button type="button" class="btn btn-default" value="13" onclick="selectButton2(this)">Vir-XX</button>
+          <button type="button" class="btn btn-default" value="17" onclick="selectButton2(this)">Vir-YY</button>
+          <button type="button" class="btn btn-default" value="21" onclick="selectButton2(this)">Vir-ZZ</button>
+          <button type="button" class="btn btn-default" value="25" onclick="selectButton2(this)">Pres-YX</button>
+          <button type="button" class="btn btn-default" value="29" onclick="selectButton2(this)">Pres-ZY</button>
+        </div>
+        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+          <button type="button" class="btn btn-default" value="2" onclick="selectButton2(this)">U-B</button>
+          <button type="button" class="btn btn-default" value="6" onclick="selectButton2(this)">LJ-14</button>
+          <button type="button" class="btn btn-default" value="10" onclick="selectButton2(this)">Coul.-recip.</button>
+          <button type="button" class="btn btn-default" value="14" onclick="selectButton2(this)">Vir-XY</button>
+          <button type="button" class="btn btn-default" value="18" onclick="selectButton2(this)">Vir-YZ</button>
+          <button type="button" class="btn btn-default" value="22" onclick="selectButton2(this)">Pres-XX</button>
+          <button type="button" class="btn btn-default" value="26" onclick="selectButton2(this)">Pres-YY</button>
+          <button type="button" class="btn btn-default" value="30" onclick="selectButton2(this)">Pres-ZZ</button>
+        </div>
+        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+          <button type="button" class="btn btn-default" value="3" onclick="selectButton2(this)">Proper-Dih.</button>
+          <button type="button" class="btn btn-default" value="7" onclick="selectButton2(this)">Coulomb-14</button>
+          <button type="button" class="btn btn-default" value="11" onclick="selectButton2(this)">Potential</button>
+          <button type="button" class="btn btn-default" value="15" onclick="selectButton2(this)">Vir-XZ</button>
+          <button type="button" class="btn btn-default" value="19" onclick="selectButton2(this)">Vir-ZX</button>
+          <button type="button" class="btn btn-default" value="23" onclick="selectButton2(this)">Pres-XY</button>
+          <button type="button" class="btn btn-default" value="27" onclick="selectButton2(this)">Pres-YZ</button>
+          <button type="button" class="btn btn-default" value="31" onclick="selectButton2(this)">#Surf*SurfTen</button>
+        </div>
+        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+          <button type="button" class="btn btn-default" value="4" onclick="selectButton2(this)">Improper-Dih.</button>
+          <button type="button" class="btn btn-default" value="8" onclick="selectButton2(this)">LJ-(SR)</button>
+          <button type="button" class="btn btn-default" value="12" onclick="selectButton2(this)">Pressure</button>
+          <button type="button" class="btn btn-default" value="16" onclick="selectButton2(this)">Vir-YX</button>
+          <button type="button" class="btn btn-default" value="20" onclick="selectButton2(this)">Vir-ZY</button>
+          <button type="button" class="btn btn-default" value="24" onclick="selectButton2(this)">Pres-XZ</button>
+          <button type="button" class="btn btn-default" value="28" onclick="selectButton2(this)">Pres-ZX</button>
+          <button type="button" class="btn btn-default" value="32" onclick="selectButton2(this)">T-rest</button>
+        </div>
+      </div>
     </div>
-    <div>Console:</div>
-    <div style="padding: 10px; background-color: white;" id="result">
-      <!-- Console content goes here -->
+    <div style="height: 150px;"></div>
+    <div style="position: fixed; bottom: 150px; left: 0; width: 100%; background-color: lightgray;opacity: 0.8;">
+      <div>
+        <button type="button" class="btn btn-success" id="run">run</button>
+      </div>
+      <div style="margin-top: 10px;">
+        <a href="usr/user.tar" download>Download file</a>
+        <a href="showxvg.html">showxvg</a>
+      </div>
+      <div>Console:</div>
+      <div class="output-container">
+        <!-- Console content goes here -->
+        <pre id="result" style="font-size: 16px;"></pre>
+      </div>
+
     </div>
-    <div style="margin-top: 10px;">
-      <a href="example-file.txt" download>Download file</a>
-      <a href="showxvg.html">showxvg</a>
-    </div>
-  </div>
 
-  <!-- Ajax JavaScript File Upload Logic -->
-  <script>
-    async function uploadFile() {
-      let formData = new FormData();
-      formData.append("file", fileupload.files[0]);
-      await fetch('/upload.php', {
-        method: "POST",
-        body: formData
-      });
-      alert('The file has been uploaded successfully.');
-    }
-  </script>
-  <!-- Ajax JavaScript Data Transfer For buttons-->
-  <script>
-    const selectButton = button => {
-      const groupId = button.parentNode.id;
-      const buttons = document.querySelectorAll("#" + groupId + " button");
-      buttons.forEach(btn => {
-        btn.classList.toggle("selected", btn === button);
+    <!-- Ajax JavaScript File Upload Logic -->
+    <script>
+      async function uploadFile() {
+        let formData = new FormData();
+        formData.append("file", fileupload.files[0]);
+        await fetch('/upload.php', {
+          method: "POST",
+          body: formData
+        });
+        alert('The file has been uploaded successfully.');
+      }
+    </script>
+    <!-- Ajax JavaScript Data Transfer For buttons-->
+    <script>
+      const selectButton = button => {
+        const groupId = button.parentNode.id;
+        const buttons = document.querySelectorAll("#" + groupId + " button");
+        buttons.forEach(btn => {
+          btn.classList.toggle("selected", btn === button);
 
-      })
-      let gid = "" + groupId;
-      let bvalu = "" + button.value;
-      var data = {
-        id: gid,
-        value: bvalu,
-      };
-      $.ajax({
-        type: "POST",
-        url: "save.php",
-        data: JSON.stringify(data),
-        contentType: "application/json"
-
-      });
-    }
-  </script>
-  <script>
-    const selectButton2 = button => {
-      const groupId = button.parentNode.parentNode.id;
-      const buttons = document.querySelectorAll("#" + groupId + " button");
-      buttons.forEach(btn => {
-        btn.classList.toggle("selected", btn === button);
-
-      })
-      let gid = "" + groupId;
-      let bvalu = "" + button.value;
-      var data = {
-        id: gid,
-        value: bvalu,
-      };
-      $.ajax({
-        type: "POST",
-        url: "save.php",
-        data: JSON.stringify(data),
-        contentType: "application/json"
-
-      });
-    }
-  </script>
-  <script>
-    var radios = document.querySelectorAll("input[type='radio']");
-    radios.forEach(function (radio) {
-      radio.addEventListener("click", function () {
-        var id = this.id;
-        var value = this.value;
+        })
+        let gid = "" + groupId;
+        let bvalu = "" + button.value;
         var data = {
-          id: id,
-          value: value,
-        }
+          id: gid,
+          value: bvalu,
+        };
         $.ajax({
           type: "POST",
           url: "save.php",
           data: JSON.stringify(data),
           contentType: "application/json"
-        });
-      })
-    });
-  </script>
-  <script>
-    var ranges = document.querySelectorAll("input[type='range']");
-    ranges.forEach(function (range) {
-      range.addEventListener("input", function () {
-        var id = this.id;
-        var value = this.value;
-        var data = {
-          id: id,
-          value: value,
-        }
-        $.ajax({
-          type: "POST",
-          url: "save.php",
-          data: JSON.stringify(data),
-          contentType: "application/json"
-        });
-      })
-    });
-  </script>
-  <script>
-    var texts = document.querySelectorAll("input[type='text']");
-    texts.forEach(function (text) {
-      text.addEventListener("input", function () {
-        var id = this.id;
-        var value = this.value;
-        var data = {
-          id: id,
-          value: value,
-        }
-        $.ajax({
-          type: "POST",
-          url: "save.php",
-          data: JSON.stringify(data),
-          contentType: "application/json"
-        });
-      })
-    });
-    texts.forEach(function (text) {
-      text.addEventListener("keydown", function (event) {
-        // 获取按键的代码
-        var keyCode = event.keyCode;
 
-        // 如果按键不是数字键或退格键或方向键，阻止默认行为
-        if (!(keyCode >= 48 && keyCode <= 57) && !(keyCode >= 96 && keyCode <= 105) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
-          event.preventDefault();
-        }
-      })
-    });
-    texts.forEach(function (text) {
-      text.addEventListener("blur", function () {
+        });
+      }
+    </script>
+    <script>
+      const selectButton2 = button => {
+        const groupId = button.parentNode.parentNode.id;
+        const buttons = document.querySelectorAll("#" + groupId + " button");
+        buttons.forEach(btn => {
+          btn.classList.toggle("selected", btn === button);
+
+        })
+        let gid = "" + groupId;
+        let bvalu = "" + button.value;
+        var data = {
+          id: gid,
+          value: bvalu,
+        };
         $.ajax({
-          url: "/cgi-bin/changemdp.cgi",
-          success: function (data) {
-            $("#result").append("mdp files modified");
+          type: "POST",
+          url: "save.php",
+          data: JSON.stringify(data),
+          contentType: "application/json"
+
+        });
+      }
+    </script>
+    <script>
+      var radios = document.querySelectorAll("input[type='radio']");
+      radios.forEach(function (radio) {
+        radio.addEventListener("click", function () {
+          var id = this.id;
+          var value = this.value;
+          var data = {
+            id: id,
+            value: value,
+          }
+          $.ajax({
+            type: "POST",
+            url: "save.php",
+            data: JSON.stringify(data),
+            contentType: "application/json"
+          });
+        })
+      });
+    </script>
+    <script>
+      var ranges = document.querySelectorAll("input[type='range']");
+      ranges.forEach(function (range) {
+        range.addEventListener("input", function () {
+          var id = this.id;
+          var value = this.value;
+          var data = {
+            id: id,
+            value: value,
+          }
+          $.ajax({
+            type: "POST",
+            url: "save.php",
+            data: JSON.stringify(data),
+            contentType: "application/json"
+          });
+        })
+      });
+    </script>
+    <script>
+      var texts = document.querySelectorAll("input[type='text']");
+      texts.forEach(function (text) {
+        text.addEventListener("input", function () {
+          var id = this.id;
+          var value = this.value;
+          var data = {
+            id: id,
+            value: value,
+          }
+          $.ajax({
+            type: "POST",
+            url: "save.php",
+            data: JSON.stringify(data),
+            contentType: "application/json"
+          });
+        })
+      });
+      texts.forEach(function (text) {
+        text.addEventListener("keydown", function (event) {
+          // 获取按键的代码
+          var keyCode = event.keyCode;
+
+          // 如果按键不是数字键或退格键或方向键，阻止默认行为
+          if (!(keyCode >= 48 && keyCode <= 57) && !(keyCode >= 96 && keyCode <= 105) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
+            event.preventDefault();
           }
         })
       });
-    }); 
-  </script>
-  <script>
-    $(document).ready(function () {
-      $("#run").click(function () {
-        $("#result").empty();
-        $.ajax({
-          url: "/cgi-bin/autogmx.cgi",
-          success: function (data) {
-            $("#result").append(data);
+      texts.forEach(function (text) {
+        text.addEventListener("blur", function () {
+          $.ajax({
+            url: "/cgi-bin/changemdp.cgi",
+            success: function (data) {
+              $("#result").append("mdp files modified\n");
+            }
+          })
+        });
+      }); 
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        var urls = [
+          "/cgi-bin/init.cgi",
+          "/cgi-bin/pdb2gmx.cgi",
+          "/cgi-bin/editconf.cgi",
+          "/cgi-bin/solvate.cgi",
+          "/cgi-bin/grompp.cgi",
+          "/cgi-bin/genion.cgi",
+          "/cgi-bin/grompp_em.cgi",
+          "/cgi-bin/mdrun.cgi",
+          "/cgi-bin/energy.cgi",
+          
+          "/cgi-bin/tar.cgi"
+        ];
+
+
+        function run(urls) {
+          if (urls.length > 0) {
+            var url = urls[0];
+            $.ajax({
+              url: url,
+              success: function (data) {
+                $("#result").append(data + "\n");
+                setTimeout(function() {
+                run(urls.slice(1));
+              },5000)
+            }
+            });
           }
+        }
+
+        $("#run").click(function () {
+          $("#result").empty();
+          run(urls);
         });
       });
-    });
-  </script>
+    </script>
+
 
 </body>
 
