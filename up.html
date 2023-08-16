@@ -85,9 +85,6 @@
     <button id="upload-button" onclick="uploadFile()"> Upload </button>
   </div>
   <p><a href="jsmol/index.html">show_structure </a> </p>
-  <div>
-    <button type="button" class="btn btn-success" id="initial">initialize</button>
-  </div>
   <div class="contai">
     <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id="forcefield">
       <span class="label label-danger">pdb2gmx</span>
@@ -108,22 +105,22 @@
         onclick="selectButton(this)">AMBERGS force field</button>
       <button type="button" class="btn btn-default" id="CHARMM27" value="charmm27"
         onclick="selectButton(this)">CHARMM27</button>
-      <button type="button" class="btn btn-default" id="GROMOS96 43a1" value="gromos96 43a1"
+      <button type="button" class="btn btn-default" id="GROMOS43a1" value="gromos43a1"
         onclick="selectButton(this)">GROMOS96
         43a1</button>
-      <button type="button" class="btn btn-default" id="GROMOS96 43a2" value="gromos96 43a2"
+      <button type="button" class="btn btn-default" id="GROMOS43a2" value="gromos43a2"
         onclick="selectButton(this)">GROMOS96
         43a2</button>
-      <button type="button" class="btn btn-default" id="GROMOS96 45a3" value="gromos96 45a3"
+      <button type="button" class="btn btn-default" id="GROMOS45a3" value="gromos45a3"
         onclick="selectButton(this)">GROMOS96
         45a3</button>
-      <button type="button" class="btn btn-default" id="GROMOS96 53a5" value="gromos96 53a5"
+      <button type="button" class="btn btn-default" id="GROMOS53a5" value="gromos53a5"
         onclick="selectButton(this)">GROMOS96
         53a5</button>
-      <button type="button" class="btn btn-default" id="GROMOS96 53a6" value="gromos96 53a6"
+      <button type="button" class="btn btn-default" id="GROMOS53a6" value="gromos53a6"
         onclick="selectButton(this)">GROMOS96
         53a6</button>
-      <button type="button" class="btn btn-default" id="GROMOS96 54a7" value="gromos96 54a7"
+      <button type="button" class="btn btn-default" id="GROMOS54a7" value="gromos54a7"
         onclick="selectButton(this)">GROMOS96
         54a7</button>
       <button type="button" class="btn btn-default" id="OPLS-AA/L" value="OPLS-AA/L"
@@ -137,8 +134,8 @@
       <button type="button" class="btn btn-default" id="tip4p" value="tip4p" onclick="selectButton(this)">tip4p</button>
       <button type="button" class="btn btn-default" id="tip4pew" value="tip4pew"
         onclick="selectButton(this)">tip4pew</button>
-      <button type="button" class="btn btn-default" id="swm4-dp" value="swm4-dp"
-        onclick="selectButton(this)">swm4-dp</button>
+      <button type="button" class="btn btn-default" id="auto" value="auto"
+        onclick="selectButton(this)">auto</button>
       <button type="button" class="btn btn-default" id="none" value="none" onclick="selectButton(this)">none</button>
       <span class="label label-primary">ignore H</span>
       <input type="radio" name="ignh" id="ignh" value="1">yes
@@ -155,15 +152,15 @@
           onclick="selectButton(this)">cubic</button>
         <button type="button" class="btn btn-default" id="dodecahedron" value="dodecahedron"
           onclick="selectButton(this)">dodecahedron</button>
-        <button type="button" class="btn btn-default" id="rhombic dodecahedron" value="rhombic dodecahedron"
+        <button type="button" class="btn btn-default" id="rhombicdodecahedron" value="rhombicdodecahedron"
           onclick="selectButton(this)">rhombic dodecahedron</button>
         <button type="button" class="btn btn-default" id="octahedron" value="octahedron"
           onclick="selectButton(this)">octahedron</button>
-        <button type="button" class="btn btn-default" id="truncated octahedron" value="truncated octahedron"
+        <button type="button" class="btn btn-default" id="truncatedoctahedron" value="truncatedoctahedron"
           onclick="selectButton(this)">truncated octahedron</button>
         <button type="button" class="btn btn-default" id="icosahedron" value="icosahedron"
           onclick="selectButton(this)">icosahedron</button>
-        <button type="button" class="btn btn-default" id="truncated octahedron" value="truncated octahedron"
+        <button type="button" class="btn btn-default" id="truncatedoctahedron" value="truncatedoctahedron"
           onclick="selectButton(this)">truncated octahedron</button>
         <button type="button" class="btn btn-default" id="triclinic" value="triclinic"
           onclick="selectButton(this)">triclinic</button>
@@ -178,8 +175,8 @@
       <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id="cs">
         <button type="button" class="btn btn-default" id="SPC" value="spc216.gro"
           onclick="selectButton(this)">SPC</button>
-        <button type="button" class="btn btn-default" id="TIP3P" value="tip3p.gro"
-          onclick="selectButton(this)">TIP3P</button>
+        <button type="button" class="btn btn-default" id="TIP3P" value="tip5p.gro"
+          onclick="selectButton(this)">TIP5P</button>
       </div>
       <div>
         <span class="label label-danger">modify .mdp files</span>
@@ -189,7 +186,7 @@
       </div>
     </div>
     <div class="btn-group btn-group-justified" role="group" id="groups">
-      <span class="label label-danger">groups</span>
+      <span class="label label-danger">groups (--默认pdb只有SOL能跑通--)</span>
       <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
         <button type="button" class="btn btn-default" value="0" onclick="selectButton2(this)">System</button>
         <button type="button" class="btn btn-default" value="1" onclick="selectButton2(this)">Protein</button>
@@ -430,7 +427,7 @@
           "/cgi-bin/grompp_em.cgi",
           "/cgi-bin/mdrun.cgi",
           "/cgi-bin/energy.cgi",
-          
+
           "/cgi-bin/tar.cgi"
         ];
 
@@ -441,11 +438,16 @@
             $.ajax({
               url: url,
               success: function (data) {
-                $("#result").append(data + "\n");
-                setTimeout(function() {
-                run(urls.slice(1));
-              },5000)
-            }
+                if (data.indexOf("Operation Failed") === -1) {
+                  $("#result").append(data + "\n");
+                  setTimeout(function () {
+                    run(urls.slice(1));
+                  }, 100)
+                } else {
+                  $("#result").append(data + "\n");
+                  return False;
+                }
+              }
             });
           }
         }
@@ -457,7 +459,11 @@
       });
     </script>
 
-
+    <script>
+      if (document.referrer.indexOf('index.html') == -1) {
+        window.location.href = 'index.html';
+      }
+    </script>
 </body>
 
 </html>

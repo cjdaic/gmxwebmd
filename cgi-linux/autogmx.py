@@ -9,40 +9,57 @@ import cgi
 import os
 sys.stdout.write("Content-Type: text/plain\n\n")
 
-
+flag = ""
 os.chdir("/var/www/html/usr")
 def autorun(command):
      
     result = ""
     #command  = "bash -c '{}'".format(command)
     sys.stdout.write("Running: " + command + "\n")
-    st = time()
-    process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
-    stdout = str(process.stdout.decode("utf-8"))
-    stderr = str(process.stderr.decode("utf-8"))
-    result += stdout
-    result += stderr
-    lines = result.split("\n")
-    if "Richard Feynman" in lines[-1]:
-        lines.pop()
-        result = "\n".join(lines)
-    if 'error' in result.lower():        
-        sys.stdout.write("error in " + command +"\n")
-        print(result)
-        exit()
-    if command.split()[0] == "grep":
-        log_file = log_dir + command.split()[0] + ".log"
-    else:
-        log_file = log_dir + command.split()[1] + ".log"
-    with open(log_file, "w") as log:
-        log.write(f"Command: {command}\n")
-        log.write(result)
-        log.write("\n")
+    try:
+        st = time()
+        process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
+        stdout = str(process.stdout.decode("utf-8"))
+        stderr = str(process.stderr.decode("utf-8"))
+        result += stdout
+        result += stderr
+
+        '''
+        lines = result.split("\n")
+        if "Richard Feynman" in lines[-1]:
+            lines.pop()
+            result = "\n".join(lines)
+        if 'error' in result.lower():        
+            sys.stdout.write("error in " + command +"\n")
+            print(result)
+            sys.exit(1)
+        '''
+        if command.split()[0] == "grep":
+            log_file = log_dir + command.split()[0] + ".log"
+        else:
+            log_file = log_dir + command.split()[1] + ".log"
+        with open(log_file, "w") as log:
+            log.write(f"Command: {command}\n")
+            log.write(result)
+            log.write("\n")
+
+
+    except subprocess.CalledProcessError as e:
+        print("Operation Failed")
+        print("error in " + command +"\n")
+        print(e.output.decode("utf-8")+"\n")
+        sys.exit(1)
+
+    except TypeError as t:
+        print("input error,please input again.")
+        print("Operation Failed")
+
+
     sys.stdout.flush()
     sys.stdout.write("{} completed \n".format(command))
     end = time()
     sys.stdout.write('Running time: %s Seconds \n'%(end-st))
-    sleep(5)
+    sleep(1)
 
 #打开/usr/usr.json文件
 with open("usr.json","r",encoding='utf-8') as usr_conf:
